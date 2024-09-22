@@ -1,0 +1,38 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Gross Value from wild-catch fisheries by state (Australia 2021-2022)",
+    "width": 800,
+    "height": 400,
+    "projection": {"type": "mercator"},
+    "data": {
+    "url": "homework9Files/output_aus_terrorities2.json",
+    "format": {"type": "topojson", "feature": "STE_2016_AUST"}
+    },
+    "transform": [
+    {
+      "lookup": "properties.STE_NAME16",
+      "from": {
+        "data": {
+          "url": "homework9Files/homework9.csv"
+        },
+        "key": "Commodity",
+        "fields": ["wildCatch"]
+      }
+    },
+    { "calculate": "datum.wildCatch", "as": "Total Revenue (thousands)" }
+    ],
+        "mark": {"type": "geoshape"},
+        "encoding": {
+            "color": {
+                "field": "Total Revenue (thousands)",
+                "type": "quantitative",
+                "scale": {"scheme": "blues"}
+            },
+            "tooltip": [
+            {"field": "properties.STE_NAME16", "type": "nominal", "title":
+            "State"},
+            {"field": "wildCatch", "type": "quantitative", "title":
+            "Revenue (thousands)"}
+            ]
+    }
+}
